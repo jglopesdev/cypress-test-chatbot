@@ -1,25 +1,29 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add('openChatBot', () => {
+    cy.viewport('iphone-xr')
+    cy.visit('/')
+    cy.get('button[aria-label="Open Chat"]')
+      .should('be.visible')
+      .click()
+  
+    cy.get('.rcb-chat-header span')
+      .should('be.visible')
+      .and('have.text', 'Sensei')
+  })
+  
+  Cypress.Commands.add('checkMessage', (expectMessage, timeout = 4000) => {
+    cy.contains('.rcb-bot-message', expectMessage, { timeout: timeout })
+      .should('be.visible')
+  })
+  
+  Cypress.Commands.add('selectOption', (option) => {
+    cy.contains('.rcb-options', option)
+      .click()
+  })
+  
+  Cypress.Commands.add('sendMessage', (message) => {
+    cy.get('textarea[placeholder^="Escreva sua mensagem"]')
+      .type(message)
+  
+    cy.get('.rcb-send-button')
+      .click()
+  })  
